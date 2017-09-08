@@ -1,3 +1,4 @@
+
 import com.alibaba.fastjson.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +11,7 @@ import java.util.Map;
 /**
  * 作者：张正平
  * 时间：2017-02-15  09:54
- * 作用：http请求工具类
+ * 作用：http请求工具类， 上传github供客户使用
  */
 public class HttpUtil {
     /**
@@ -76,8 +77,13 @@ public class HttpUtil {
      * @param jsonStr 请求参数JSON字符创
      * @return
      */
-    public static JSONObject sendImagePostRequest(String requestUrl, String jsonStr, HttpServletResponse response) {
-        JSONObject jsonObject = null;
+    public static void sendImagePostRequest(String requestUrl, String jsonStr, HttpServletResponse response) {
+        if (isEmpty(requestUrl)) {
+            System.out.println("com.jy.HttpUtil.sendPostRequest方法中,参数requestUrl(请求地址)为空!");
+        }
+        if (isEmpty(jsonStr)) {
+            System.out.println("com.jy.HttpUtil.sendPostRequest方法中,参数jsonStr(请求参数)为空!");
+        }
         BufferedReader reader = null;
         OutputStreamWriter writer = null;
         HttpURLConnection conn = null;
@@ -116,10 +122,7 @@ public class HttpUtil {
                     stream.write(data, 0, len);
                 }
             }
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            //读取返回结果
-            String lines = reader.readLine();
-            jsonObject = JSONObject.parseObject(lines);
+
         } catch (MalformedURLException e) {
             System.out.println("HttpUtil.sendPostRequest,请求失败!" + e.getMessage());
             e.printStackTrace();
@@ -152,7 +155,6 @@ public class HttpUtil {
                 e.printStackTrace();
             }
         }
-        return jsonObject;
     }
     /**
      * 请求参数分装
@@ -198,15 +200,13 @@ public class HttpUtil {
      * @param requestUrl 请求地址
      * @return
      */
-    public static String getImg(String requestUrl, Map<String, String> head, Map<String, String> body, HttpServletResponse response) {
+    public static void getImg(String requestUrl, Map<String, String> head, Map<String, String> body, HttpServletResponse response) {
         String requestParams = getRequestParams(head, body);
-        String data = "";
         if (!isEmpty(requestParams)) {
             System.out.println("请求URL---requestUrl:" + requestUrl);
             System.out.println("请求参数---requestParams:" + requestParams);
-            data = sendImagePostRequest(requestUrl, requestParams, response).toJSONString();
+            sendImagePostRequest(requestUrl, requestParams, response);
         }
-        return data;
     }
     /**
      * 判断字符串是否为空
