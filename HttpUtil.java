@@ -1,10 +1,7 @@
-
 import com.alibaba.fastjson.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -124,10 +121,10 @@ public class HttpUtil {
             String lines = reader.readLine();
             jsonObject = JSONObject.parseObject(lines);
         } catch (MalformedURLException e) {
-            logger.error("HttpUtil.sendPostRequest,请求失败!" + e.getMessage());
+            System.out.println("HttpUtil.sendPostRequest,请求失败!" + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            logger.error("HttpUtil.sendPostRequest,请求失败!" + e.getMessage());
+            System.out.println("HttpUtil.sendPostRequest,请求失败!" + e.getMessage());
             e.printStackTrace();
         } finally {
             try {
@@ -171,7 +168,7 @@ public class HttpUtil {
         _head.put("password", head.get("password"));//密码
 
         for (String key : body.keySet()) {
-           _body.put(key, body.get(key));
+            _body.put(key, body.get(key));
         }
 
         _head.put("data", _body);
